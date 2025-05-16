@@ -1,7 +1,18 @@
-
 import Navbar from "@/components/Navbar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const Leaderboard = () => {
   const contributors = [
@@ -20,18 +31,18 @@ const Leaderboard = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <div className="container mx-auto py-12 px-4">
-        <h1 className="text-3xl font-bold mb-8">Leaderboard</h1>
-        
-        <Card>
-          <CardHeader>
-            <CardTitle>Top Contributors</CardTitle>
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 className="text-2xl font-semibold mb-6">Leaderboard</h1>
+
+        <Card className="shadow-sm border border-gray-200">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">Top Contributors</CardTitle>
           </CardHeader>
-          <CardContent>
-            <Table>
+          <CardContent className="px-2 py-2">
+            <Table className="text-sm">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-16">Rank</TableHead>
+                  <TableHead className="w-12 text-center">#</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead className="text-center">Problems</TableHead>
                   <TableHead className="text-center">Solutions</TableHead>
@@ -41,11 +52,13 @@ const Leaderboard = () => {
               <TableBody>
                 {contributors.map((contributor) => (
                   <TableRow key={contributor.rank}>
-                    <TableCell className="font-medium">{contributor.rank}</TableCell>
+                    <TableCell className="text-center font-medium">{contributor.rank}</TableCell>
                     <TableCell>{contributor.name}</TableCell>
                     <TableCell className="text-center">{contributor.problems}</TableCell>
                     <TableCell className="text-center">{contributor.solutions}</TableCell>
-                    <TableCell className="text-center font-semibold">{contributor.points}</TableCell>
+                    <TableCell className="text-center font-semibold text-blue-600">
+                      {contributor.points}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

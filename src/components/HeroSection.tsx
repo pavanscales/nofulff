@@ -1,7 +1,5 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-
 const HeroSection = () => {
   return (
     <section className="py-16 md:py-24 bg-white">
@@ -10,7 +8,7 @@ const HeroSection = () => {
           Find Problems Worth Solving
         </h1>
         <p className="text-lg text-gray-600 mb-10 max-w-3xl mx-auto">
-          Hurdle Hunt connects problem-seekers with real challenges. Discover problems
+          No Fluff connects problem-seekers with real challenges. Discover problems
           that need solutions and build something people actually need.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">

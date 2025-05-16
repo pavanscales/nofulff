@@ -1,33 +1,46 @@
-
 import { Link, useLocation } from "react-router-dom";
-import { Sun } from "lucide-react";
 
 const Navbar = () => {
   const location = useLocation();
-  
-  const isActive = (path: string) => {
-    return location.pathname === path ? "text-blue-600" : "text-gray-600 hover:text-gray-900";
-  };
+  const isActive = (path: string) =>
+    location.pathname === path
+      ? "text-blue-600 font-semibold"
+      : "text-gray-600 hover:text-gray-900";
 
   return (
-    <header className="w-full bg-white border-b border-gray-100">
-      <div className="container mx-auto flex items-center justify-between py-4 px-4 md:px-6">
-        <Link to="/" className="flex items-center">
-          <div className="bg-blue-600 text-white font-bold text-lg p-2 rounded mr-2">
-            HH
-          </div>
+    <header className="w-full bg-white border-b border-gray-100 shadow-sm">
+      <div className="container mx-auto flex items-center justify-between px-6 relative h-20">
+       
+        <Link to="/" className="z-10 flex items-center">
+          <img
+            src="/no-fluff.jpeg"
+            alt="App Icon"
+            className="w-40 h-40 object-contain scale-70"
+            draggable={false}
+          />
         </Link>
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/" className={`font-medium ${isActive('/')}`}>Home</Link>
-          <Link to="/problems" className={`font-medium ${isActive('/problems')}`}>Problems</Link>
-          <Link to="/leaderboard" className={`font-medium ${isActive('/leaderboard')}`}>Leaderboard</Link>
-          <Link to="/blog" className={`font-medium ${isActive('/blog')}`}>Blog</Link>
-          <Link to="/forums" className={`font-medium ${isActive('/forums')}`}>Forums</Link>
-          <Link to="/submit" className={`font-medium ${isActive('/submit')}`}>Submit</Link>
+
+        
+        <nav className="hidden md:flex space-x-8 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <Link to="/" className={isActive("/")}>
+            Home
+          </Link>
+          <Link to="/problems" className={isActive("/problems")}>
+            Problems
+          </Link>
+          <Link to="/leaderboard" className={isActive("/leaderboard")}>
+            Leaderboard
+          </Link>
+          <Link to="/blog" className={isActive("/blog")}>
+            Blog
+          </Link>
+          <Link to="/forums" className={isActive("/forums")}>
+            Forums
+          </Link>
+          <Link to="/submit" className={isActive("/submit")}>
+            Submit
+          </Link>
         </nav>
-        <button className="p-2 rounded-full hover:bg-gray-100">
-          <Sun size={20} />
-        </button>
       </div>
     </header>
   );

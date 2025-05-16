@@ -13,7 +13,6 @@ type ProblemCardProps = {
   votes: number;
   comments: number;
 };
-
 const ProblemCard = ({ title, description, categories, votes, comments }: ProblemCardProps) => {
   return (
     <Card className="h-full flex flex-col">
