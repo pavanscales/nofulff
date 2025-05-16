@@ -1,8 +1,14 @@
 
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Sun } from "lucide-react";
 
 const Navbar = () => {
+  const location = useLocation();
+  
+  const isActive = (path: string) => {
+    return location.pathname === path ? "text-blue-600" : "text-gray-600 hover:text-gray-900";
+  };
+
   return (
     <header className="w-full bg-white border-b border-gray-100">
       <div className="container mx-auto flex items-center justify-between py-4 px-4 md:px-6">
@@ -12,12 +18,12 @@ const Navbar = () => {
           </div>
         </Link>
         <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-blue-600 font-medium">Home</Link>
-          <Link to="/problems" className="text-gray-600 hover:text-gray-900 font-medium">Problems</Link>
-          <Link to="/leaderboard" className="text-gray-600 hover:text-gray-900 font-medium">Leaderboard</Link>
-          <Link to="/blog" className="text-gray-600 hover:text-gray-900 font-medium">Blog</Link>
-          <Link to="/forums" className="text-gray-600 hover:text-gray-900 font-medium">Forums</Link>
-          <Link to="/submit" className="text-gray-600 hover:text-gray-900 font-medium">Submit</Link>
+          <Link to="/" className={`font-medium ${isActive('/')}`}>Home</Link>
+          <Link to="/problems" className={`font-medium ${isActive('/problems')}`}>Problems</Link>
+          <Link to="/leaderboard" className={`font-medium ${isActive('/leaderboard')}`}>Leaderboard</Link>
+          <Link to="/blog" className={`font-medium ${isActive('/blog')}`}>Blog</Link>
+          <Link to="/forums" className={`font-medium ${isActive('/forums')}`}>Forums</Link>
+          <Link to="/submit" className={`font-medium ${isActive('/submit')}`}>Submit</Link>
         </nav>
         <button className="p-2 rounded-full hover:bg-gray-100">
           <Sun size={20} />
