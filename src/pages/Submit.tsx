@@ -10,19 +10,19 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const allTags = [
-  "Technology", "Software Development", "Digital Privacy", "Cybersecurity", "AI & Automation", "Mobile Apps", 
-  "Digital Accessibility", "Web Development", "Cloud Computing", "Environment", "Climate Action", 
-  "Renewable Energy", "Waste Management", "Sustainable Living", "Conservation", "Urban Planning", "Healthcare", 
-  "Mental Health", "Fitness & Exercise", "Nutrition", "Elder Care", "Telehealth", "Health Tech", "Education", 
-  "Online Learning", "Professional Development", "STEM Education", "Coding Bootcamps", "Technical Documentation", 
-  "Learning Resources", "Community Building", "Online Communities", "Open Source Projects", "Volunteer Management", 
-  "Tech Conferences", "Public Safety", "Civic Tech", "Remote Work", "Workplace Tools", "Small Business", 
-  "Entrepreneurship", "Job Search", "Career Development", "Work-Life Balance", "Freelancing", "Housing", 
-  "Transportation", "Public Transit", "Digital Infrastructure", "Smart Cities", "Rural Connectivity", 
-  "Internet Access", "Personal Productivity", "Personal Finance", "Time Management", "Smart Home", "Tech Support", 
-  "Home Office", "Consumer Tech", "Communication", "Social Media", "Digital Literacy", "Content Creation", 
-  "Podcasting", "Media Production", "Information Access", "Personal Branding", "Digital Marketing", "E-commerce", 
-  "Online Privacy", "Identity Management", "Subscription Services", "Digital Wellness", "Arts & Technology", 
+  "Technology", "Software Development", "Digital Privacy", "Cybersecurity", "AI & Automation", "Mobile Apps",
+  "Digital Accessibility", "Web Development", "Cloud Computing", "Environment", "Climate Action",
+  "Renewable Energy", "Waste Management", "Sustainable Living", "Conservation", "Urban Planning", "Healthcare",
+  "Mental Health", "Fitness & Exercise", "Nutrition", "Elder Care", "Telehealth", "Health Tech", "Education",
+  "Online Learning", "Professional Development", "STEM Education", "Coding Bootcamps", "Technical Documentation",
+  "Learning Resources", "Community Building", "Online Communities", "Open Source Projects", "Volunteer Management",
+  "Tech Conferences", "Public Safety", "Civic Tech", "Remote Work", "Workplace Tools", "Small Business",
+  "Entrepreneurship", "Job Search", "Career Development", "Work-Life Balance", "Freelancing", "Housing",
+  "Transportation", "Public Transit", "Digital Infrastructure", "Smart Cities", "Rural Connectivity",
+  "Internet Access", "Personal Productivity", "Personal Finance", "Time Management", "Smart Home", "Tech Support",
+  "Home Office", "Consumer Tech", "Communication", "Social Media", "Digital Literacy", "Content Creation",
+  "Podcasting", "Media Production", "Information Access", "Personal Branding", "Digital Marketing", "E-commerce",
+  "Online Privacy", "Identity Management", "Subscription Services", "Digital Wellness", "Arts & Technology",
   "Gaming & Esports", "Travel Tech", "Emergency Tech", "Legal Tech", "Research & Innovation", "Open Source"
 ];
 
@@ -36,17 +36,17 @@ const StepIndicator = ({
   currentStep: number;
   label: string;
 }) => (
-  <div className="flex items-center w-full">
+  <div className="flex items-center w-full min-w-[80px]">
     <div className="flex flex-col items-center">
       <div
         className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center",
-          currentStep >= step ? "bg-blue-600 text-white" : "bg-gray-200"
+          "w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold",
+          currentStep >= step ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-600"
         )}
       >
         {step}
       </div>
-      <span className="text-sm mt-1">{label}</span>
+      <span className="text-xs mt-1 text-center max-w-[70px] truncate">{label}</span>
     </div>
     {step !== 3 && <div className="flex-1 h-px bg-gray-300 mx-2"></div>}
   </div>
@@ -69,11 +69,14 @@ const Submit = () => {
   );
 
   // Use functional state update for arrays
-  const handleTagSelect = useCallback((tag: string) => {
-    if (selectedTags.length >= 5) return;
-    setSelectedTags((prev) => [...prev, tag]);
-    setSearchTag("");
-  }, [selectedTags.length]);
+  const handleTagSelect = useCallback(
+    (tag: string) => {
+      if (selectedTags.length >= 5) return;
+      setSelectedTags((prev) => [...prev, tag]);
+      setSearchTag("");
+    },
+    [selectedTags.length]
+  );
 
   const handleTagRemove = useCallback((tag: string) => {
     setSelectedTags((prev) => prev.filter((t) => t !== tag));
@@ -92,12 +95,12 @@ const Submit = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white flex flex-col">
       <Navbar />
-      <div className="container mx-auto max-w-3xl py-12 px-4">
-        <h1 className="text-3xl font-bold mb-2">Submit a Problem</h1>
+      <main className="container mx-auto max-w-4xl py-12 px-4 sm:px-6 lg:px-8 flex-grow flex flex-col">
+        <h1 className="text-3xl font-bold mb-4 sm:mb-8 text-center sm:text-left">Submit a Problem</h1>
 
-        <div className="flex justify-between items-center my-8">
+        <div className="flex justify-between items-center mb-8 gap-2 flex-wrap">
           {[1, 2, 3].map((s) => (
             <StepIndicator
               key={s}
@@ -108,7 +111,7 @@ const Submit = () => {
           ))}
         </div>
 
-        <Card>
+        <Card className="w-full">
           <CardContent className="p-6">
             {step === 1 && (
               <>
@@ -122,6 +125,7 @@ const Submit = () => {
                       placeholder="e.g., Finding affordable short-term housing for internships"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
+                      className="max-w-full"
                     />
                   </div>
 
@@ -133,6 +137,7 @@ const Submit = () => {
                       rows={6}
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
+                      className="max-w-full"
                     />
                     <p className="text-sm text-gray-500">{description.length} / 50 characters minimum</p>
                   </div>
@@ -143,10 +148,11 @@ const Submit = () => {
                       placeholder="Search tags..."
                       value={searchTag}
                       onChange={(e) => setSearchTag(e.target.value)}
+                      className="max-w-full"
                     />
 
                     {selectedTags.length > 0 && (
-                      <div className="flex flex-wrap gap-2 my-3">
+                      <div className="flex flex-wrap gap-2 my-3 max-w-full">
                         {selectedTags.map((tag) => (
                           <Badge
                             key={tag}
@@ -159,11 +165,11 @@ const Submit = () => {
                       </div>
                     )}
 
-                    <div className="flex flex-wrap gap-2 mt-3 max-h-60 overflow-auto border rounded p-2 bg-gray-50">
+                    <div className="flex flex-wrap gap-2 mt-3 max-h-60 overflow-auto border rounded p-2 bg-gray-50 max-w-full">
                       {filteredTags.map((tag) => (
                         <Badge
                           key={tag}
-                          className="bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-700 cursor-pointer px-3 py-1.5"
+                          className="bg-gray-100 text-gray-700 hover:bg-blue-50 hover:text-blue-700 cursor-pointer px-3 py-1.5 whitespace-nowrap"
                           onClick={() => handleTagSelect(tag)}
                         >
                           {tag}
@@ -187,6 +193,7 @@ const Submit = () => {
                       rows={4}
                       value={context}
                       onChange={(e) => setContext(e.target.value)}
+                      className="max-w-full"
                     />
                   </div>
                   <div>
@@ -197,6 +204,7 @@ const Submit = () => {
                       rows={4}
                       value={impact}
                       onChange={(e) => setImpact(e.target.value)}
+                      className="max-w-full"
                     />
                   </div>
                 </div>
@@ -213,7 +221,7 @@ const Submit = () => {
                     <h3 className="font-medium mb-2">Tags</h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedTags.map((tag) => (
-                        <Badge key={tag} className="bg-blue-50 text-blue-700">
+                        <Badge key={tag} className="bg-blue-50 text-blue-700 whitespace-nowrap">
                           {tag}
                         </Badge>
                       ))}
@@ -228,7 +236,7 @@ const Submit = () => {
             <div className="mt-8">
               <Button
                 onClick={handleContinue}
-                className={`w-full ${
+                className={`w-full text-base sm:text-lg ${
                   step === 3 ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"
                 }`}
                 disabled={(step === 1 && !isStep1Valid) || (step === 2 && !isStep2Valid)}
@@ -238,7 +246,7 @@ const Submit = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </main>
     </div>
   );
 };

@@ -72,21 +72,24 @@ const ThreadCard = React.memo(function ThreadCard({
   lastActivity,
 }: Omit<Thread, "id">) {
   return (
-    <Card className="hover:border-blue-200 transition-colors">
+    <Card className="hover:border-blue-300 transition-colors">
       <CardHeader className="pb-2">
-        <div className="flex justify-between">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
           <CardTitle className="text-lg font-semibold">{title}</CardTitle>
-          <Badge variant="outline" className="bg-blue-50 text-blue-700 hover:bg-blue-50">
+          <Badge
+            variant="outline"
+            className="bg-blue-50 text-blue-700 hover:bg-blue-50 whitespace-nowrap"
+          >
             {category}
           </Badge>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="flex justify-between items-center text-sm text-gray-500">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-sm text-gray-500 gap-2">
           <div>
             Posted by <span className="text-gray-700">{author}</span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <span>{replies} replies</span>
             <span>Last activity: {lastActivity}</span>
           </div>
@@ -100,10 +103,12 @@ const Forums = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <main className="container mx-auto py-12 px-4">
-        <div className="flex justify-between items-center mb-8">
+      <main className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
           <h1 className="text-3xl font-bold">Forums</h1>
-          <Button className="bg-blue-600 hover:bg-blue-700">New Thread</Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 text-white w-full sm:w-auto">
+            New Thread
+          </Button>
         </div>
 
         <div className="space-y-4">
