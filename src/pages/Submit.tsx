@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,8 +10,47 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const allTags = [
-  "Technology", "Software Development", "Digital Privacy", "Cybersecurity", "AI & Automation", "Mobile Apps", "Digital Accessibility", "Web Development", "Cloud Computing", "Environment", "Climate Action", "Renewable Energy", "Waste Management", "Sustainable Living", "Conservation", "Urban Planning", "Healthcare", "Mental Health", "Fitness & Exercise", "Nutrition", "Elder Care", "Telehealth", "Health Tech", "Education", "Online Learning", "Professional Development", "STEM Education", "Coding Bootcamps", "Technical Documentation", "Learning Resources", "Community Building", "Online Communities", "Open Source Projects", "Volunteer Management", "Tech Conferences", "Public Safety", "Civic Tech", "Remote Work", "Workplace Tools", "Small Business", "Entrepreneurship", "Job Search", "Career Development", "Work-Life Balance", "Freelancing", "Housing", "Transportation", "Public Transit", "Digital Infrastructure", "Smart Cities", "Rural Connectivity", "Internet Access", "Personal Productivity", "Personal Finance", "Time Management", "Smart Home", "Tech Support", "Home Office", "Consumer Tech", "Communication", "Social Media", "Digital Literacy", "Content Creation", "Podcasting", "Media Production", "Information Access", "Personal Branding", "Digital Marketing", "E-commerce", "Online Privacy", "Identity Management", "Subscription Services", "Digital Wellness", "Arts & Technology", "Gaming & Esports", "Travel Tech", "Emergency Tech", "Legal Tech", "Research & Innovation", "Open Source"
+  "Technology", "Software Development", "Digital Privacy", "Cybersecurity", "AI & Automation", "Mobile Apps", 
+  "Digital Accessibility", "Web Development", "Cloud Computing", "Environment", "Climate Action", 
+  "Renewable Energy", "Waste Management", "Sustainable Living", "Conservation", "Urban Planning", "Healthcare", 
+  "Mental Health", "Fitness & Exercise", "Nutrition", "Elder Care", "Telehealth", "Health Tech", "Education", 
+  "Online Learning", "Professional Development", "STEM Education", "Coding Bootcamps", "Technical Documentation", 
+  "Learning Resources", "Community Building", "Online Communities", "Open Source Projects", "Volunteer Management", 
+  "Tech Conferences", "Public Safety", "Civic Tech", "Remote Work", "Workplace Tools", "Small Business", 
+  "Entrepreneurship", "Job Search", "Career Development", "Work-Life Balance", "Freelancing", "Housing", 
+  "Transportation", "Public Transit", "Digital Infrastructure", "Smart Cities", "Rural Connectivity", 
+  "Internet Access", "Personal Productivity", "Personal Finance", "Time Management", "Smart Home", "Tech Support", 
+  "Home Office", "Consumer Tech", "Communication", "Social Media", "Digital Literacy", "Content Creation", 
+  "Podcasting", "Media Production", "Information Access", "Personal Branding", "Digital Marketing", "E-commerce", 
+  "Online Privacy", "Identity Management", "Subscription Services", "Digital Wellness", "Arts & Technology", 
+  "Gaming & Esports", "Travel Tech", "Emergency Tech", "Legal Tech", "Research & Innovation", "Open Source"
 ];
+
+// Reusable Step Indicator component
+const StepIndicator = ({
+  step,
+  currentStep,
+  label,
+}: {
+  step: number;
+  currentStep: number;
+  label: string;
+}) => (
+  <div className="flex items-center w-full">
+    <div className="flex flex-col items-center">
+      <div
+        className={cn(
+          "w-8 h-8 rounded-full flex items-center justify-center",
+          currentStep >= step ? "bg-blue-600 text-white" : "bg-gray-200"
+        )}
+      >
+        {step}
+      </div>
+      <span className="text-sm mt-1">{label}</span>
+    </div>
+    {step !== 3 && <div className="flex-1 h-px bg-gray-300 mx-2"></div>}
+  </div>
+);
 
 const Submit = () => {
   const [step, setStep] = useState(1);
@@ -22,32 +61,33 @@ const Submit = () => {
   const [context, setContext] = useState("");
   const [impact, setImpact] = useState("");
 
-  const filteredTags = allTags.filter(tag =>
-    !selectedTags.includes(tag) &&
-    (searchTag === "" || tag.toLowerCase().includes(searchTag.toLowerCase()))
+  // Filter tags based on search & selection
+  const filteredTags = allTags.filter(
+    (tag) =>
+      !selectedTags.includes(tag) &&
+      (searchTag === "" || tag.toLowerCase().includes(searchTag.toLowerCase()))
   );
 
-  const handleTagSelect = (tag: string) => {
-    if (selectedTags.length < 5) {
-      setSelectedTags(prev => [...prev, tag]);
-      setSearchTag("");
-    }
-  };
+  // Use functional state update for arrays
+  const handleTagSelect = useCallback((tag: string) => {
+    if (selectedTags.length >= 5) return;
+    setSelectedTags((prev) => [...prev, tag]);
+    setSearchTag("");
+  }, [selectedTags.length]);
 
-  const handleTagRemove = (tag: string) => {
-    setSelectedTags(selectedTags.filter(t => t !== tag));
-  };
+  const handleTagRemove = useCallback((tag: string) => {
+    setSelectedTags((prev) => prev.filter((t) => t !== tag));
+  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [step]);
 
-  // Changed here: removed description length check to enable Continue even if description < 50
   const isStep1Valid = title.length >= 5 && selectedTags.length > 0;
   const isStep2Valid = context.length > 10 && impact.length > 10;
 
   const handleContinue = () => {
-    if (step < 3) setStep(step + 1);
+    if (step < 3) setStep((s) => s + 1);
     else alert("Submitted!");
   };
 
@@ -59,24 +99,19 @@ const Submit = () => {
 
         <div className="flex justify-between items-center my-8">
           {[1, 2, 3].map((s) => (
-            <div key={s} className="flex items-center w-full">
-              <div className="flex flex-col items-center">
-                <div className={cn("w-8 h-8 rounded-full flex items-center justify-center", step >= s ? "bg-blue-600 text-white" : "bg-gray-200")}>
-                  {s}
-                </div>
-                <span className="text-sm mt-1">
-                  {["Problem Details", "Context & Impact", "Review & Submit"][s - 1]}
-                </span>
-              </div>
-              {s !== 3 && <div className="flex-1 h-px bg-gray-300 mx-2"></div>}
-            </div>
+            <StepIndicator
+              key={s}
+              step={s}
+              currentStep={step}
+              label={["Problem Details", "Context & Impact", "Review & Submit"][s - 1]}
+            />
           ))}
         </div>
 
         <Card>
           <CardContent className="p-6">
             {step === 1 && (
-              <div>
+              <>
                 <h2 className="text-xl font-semibold mb-6">Tell us about the problem</h2>
 
                 <div className="space-y-6">
@@ -137,11 +172,11 @@ const Submit = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </>
             )}
 
             {step === 2 && (
-              <div>
+              <>
                 <h2 className="text-xl font-semibold mb-6">Context & Impact</h2>
                 <div className="space-y-6">
                   <div>
@@ -165,53 +200,38 @@ const Submit = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </>
             )}
 
             {step === 3 && (
-              <div>
+              <>
                 <h2 className="text-xl font-semibold mb-6">Review & Submit</h2>
-                <div className="space-y-6">
-                  <div className="border rounded-md p-4 space-y-4">
-                    <div>
-                      <h3 className="font-medium">Title</h3>
-                      <p>{title}</p>
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Description</h3>
-                      <p>{description}</p>
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Tags</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedTags.map((tag) => (
-                          <Badge key={tag} className="bg-blue-50 text-blue-700">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Context</h3>
-                      <p>{context}</p>
-                    </div>
-                    <div>
-                      <h3 className="font-medium">Impact</h3>
-                      <p>{impact}</p>
+                <div className="space-y-6 border rounded-md p-4">
+                  <Section title="Title" content={title} />
+                  <Section title="Description" content={description} />
+                  <div>
+                    <h3 className="font-medium mb-2">Tags</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedTags.map((tag) => (
+                        <Badge key={tag} className="bg-blue-50 text-blue-700">
+                          {tag}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
+                  <Section title="Context" content={context} />
+                  <Section title="Impact" content={impact} />
                 </div>
-              </div>
+              </>
             )}
 
             <div className="mt-8">
               <Button
                 onClick={handleContinue}
-                className={`w-full ${step === 3 ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"}`}
-                disabled={
-                  (step === 1 && !isStep1Valid) ||
-                  (step === 2 && !isStep2Valid)
-                }
+                className={`w-full ${
+                  step === 3 ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"
+                }`}
+                disabled={(step === 1 && !isStep1Valid) || (step === 2 && !isStep2Valid)}
               >
                 {step === 3 ? "Submit" : "Continue"}
               </Button>
@@ -222,5 +242,13 @@ const Submit = () => {
     </div>
   );
 };
+
+// Small helper for Review & Submit section items
+const Section = ({ title, content }: { title: string; content: string }) => (
+  <div>
+    <h3 className="font-medium mb-1">{title}</h3>
+    <p>{content || "-"}</p>
+  </div>
+);
 
 export default Submit;
