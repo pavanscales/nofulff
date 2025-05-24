@@ -31,15 +31,15 @@ const Leaderboard = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <main className="container mx-auto max-w-4xl px-4 py-8">
-        <h1 className="text-2xl font-semibold mb-6">Leaderboard</h1>
+      <main className="container mx-auto max-w-4xl px-4 sm:px-6 md:px-8 py-8">
+        <h1 className="text-xl sm:text-2xl font-semibold mb-6">Leaderboard</h1>
 
-        <Card className="shadow-sm border border-gray-200">
+        <Card className="shadow-sm border border-gray-200 overflow-x-auto">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">Top Contributors</CardTitle>
           </CardHeader>
           <CardContent className="p-2">
-            <Table className="text-sm">
+            <Table className="text-sm min-w-[600px]">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-12 text-center">#</TableHead>
