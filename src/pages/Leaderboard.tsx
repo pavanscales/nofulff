@@ -31,14 +31,14 @@ const Leaderboard = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <main className="container mx-auto max-w-4xl px-4 py-8">
         <h1 className="text-2xl font-semibold mb-6">Leaderboard</h1>
 
         <Card className="shadow-sm border border-gray-200">
           <CardHeader className="pb-3">
             <CardTitle className="text-lg">Top Contributors</CardTitle>
           </CardHeader>
-          <CardContent className="px-2 py-2">
+          <CardContent className="p-2">
             <Table className="text-sm">
               <TableHeader>
                 <TableRow>
@@ -50,14 +50,14 @@ const Leaderboard = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {contributors.map((contributor) => (
-                  <TableRow key={contributor.rank}>
-                    <TableCell className="text-center font-medium">{contributor.rank}</TableCell>
-                    <TableCell>{contributor.name}</TableCell>
-                    <TableCell className="text-center">{contributor.problems}</TableCell>
-                    <TableCell className="text-center">{contributor.solutions}</TableCell>
+                {contributors.map(({ rank, name, problems, solutions, points }) => (
+                  <TableRow key={rank}>
+                    <TableCell className="text-center font-medium">{rank}</TableCell>
+                    <TableCell>{name}</TableCell>
+                    <TableCell className="text-center">{problems}</TableCell>
+                    <TableCell className="text-center">{solutions}</TableCell>
                     <TableCell className="text-center font-semibold text-blue-600">
-                      {contributor.points}
+                      {points}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -65,7 +65,7 @@ const Leaderboard = () => {
             </Table>
           </CardContent>
         </Card>
-      </div>
+      </main>
     </div>
   );
 };
